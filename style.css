@@ -1,0 +1,698 @@
+:root {
+  /* Fundo Principal */
+  --bg-deep-blue: #0F0F24; /* ou #120A2A */
+  
+  /* Tipografia */
+  --text-primary: #FFFFFF;
+  
+  /* Cores de Destaque */
+  --accent-purple: #9D46FF; /* Roxo Elétrico */
+  --accent-action: #00FA9A; /* Verde Menta Neon */
+  --accent-detail: #00FFFF; /* Ciano */
+  
+  /* Configuração Base */
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-deep-blue);
+  color: var(--text-primary);
+  /* Adicione sua fonte preferida aqui, ex: 'Inter', sans-serif */
+}
+
+/* Variáveis para relembrar (já configuradas anteriormente) */
+:root {
+  --bg-deep-blue: #0F0F24;
+  --text-primary: #FFFFFF;
+  --accent-purple: #9D46FF;
+  --accent-action: #00FA9A;
+  --accent-detail: #00FFFF;
+  --glass-bg: rgba(255, 255, 255, 0.05); /* Leve transparência para separar a sidebar */
+}
+
+/* Reset Básico */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+
+/* Container da Sidebar */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 260px;
+  background-color: var(--bg-deep-blue);
+  
+  /* A Mágica da Profundidade 👇 */
+  /* Sombra preta forte e espalhada para a direita */
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.7); 
+  /* Borda direita quase invisível para definir o corte */
+  border-right: 1px solid rgba(255, 255, 255, 0.03); 
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  z-index: 1000; /* Garante que ela fique na frente de qualquer conteúdo da página */
+}
+
+/* 1. Header & Logo */
+.sidebar-header .logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.sidebar-header .dot {
+  color: var(--accent-purple); /* Ponto final Roxo Elétrico */
+}
+
+/* 2. Navegação */
+.sidebar-nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-nav a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7); /* Branco com transparência para itens inativos */
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Efeito Hover e Ativo */
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  color: var(--text-primary); /* Branco total */
+  padding-left: 10px; /* Movimento sutil para a direita */
+}
+
+/* Barrinha lateral brilhante no hover/active */
+.sidebar-nav a::before {
+  content: '';
+  position: absolute;
+  left: -2rem; /* Cola na borda da tela */
+  top: 50%;
+  transform: translateY(-50%);
+  height: 0%;
+  width: 4px;
+  background-color: var(--accent-purple);
+  box-shadow: 0 0 10px var(--accent-purple); /* Brilho neon */
+  transition: height 0.3s ease;
+}
+
+.sidebar-nav a:hover::before,
+.sidebar-nav a.active::before {
+  height: 100%; /* A barra cresce */
+}
+
+/* 3. Botão de Ação (Verde Menta) */
+.btn-action {
+  display: block;
+  text-align: center;
+  background-color: transparent;
+  color: var(--accent-action);
+  border: 1px solid var(--accent-action);
+  padding: 0.8rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px rgba(0, 250, 154, 0.1);
+}
+
+.btn-action:hover {
+  background-color: var(--accent-action);
+  color: var(--bg-deep-blue); /* Contraste preto/azul no texto */
+  box-shadow: 0 0 20px rgba(0, 250, 154, 0.4); /* Brilho intenso */
+}
+
+/* Layout Principal (Compensa a Sidebar) */
+.main-content {
+  margin-left: 260px; /* Largura da sidebar */
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden; /* Impede scroll horizontal indesejado */
+}
+
+.hero-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4rem;
+  position: relative;
+}
+
+/* --- Fundo Tecnológico --- */
+/* Efeito de Grid/Rede Ciano sutil */
+.tech-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: 
+    radial-gradient(var(--accent-detail) 1px, transparent 1px);
+  background-size: 40px 40px; /* Tamanho dos pontinhos */
+  opacity: 0.1; /* Bem sutil */
+  z-index: -2;
+}
+
+/* Brilho Roxo atrás da mão */
+.purple-glow {
+  position: absolute;
+  right: 10%;
+  top: 20%;
+  width: 500px;
+  height: 500px;
+  background: var(--accent-purple);
+  filter: blur(150px); /* Desfoque extremo para criar "luz" */
+  opacity: 0.25;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* --- Layout Interno --- */
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Tipografia */
+.greeting {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.headline {
+  font-size: 5rem; /* Texto Gigante */
+  line-height: 0.9;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.text-purple { color: var(--accent-purple); text-shadow: 0 0 20px rgba(157, 70, 255, 0.4); }
+.text-white { color: var(--text-primary); }
+.text-green { 
+  color: var(--accent-action); 
+  font-family: 'Courier New', monospace; /* Fonte estilo código */
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Botões */
+.hero-btns { display: flex; gap: 1rem; }
+
+.btn-primary {
+  background-color: var(--accent-purple);
+  color: white;
+  padding: 12px 30px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+  border: 1px solid var(--accent-purple);
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  box-shadow: 0 0 15px var(--accent-purple);
+}
+
+.btn-outline {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 12px 30px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  border-color: var(--text-primary);
+  background-color: rgba(255,255,255,0.05);
+}
+
+/* --- Visual 3D (Direita) --- */
+.hero-visual {
+  position: relative;
+  width: 50%;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animação de Flutuação */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating-hand {
+  width: 100%;
+  max-width: 500px;
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+/* Ícones de código orbitando (Opcional) */
+.code-icon {
+  position: absolute;
+  color: var(--accent-detail); /* Ciano */
+  font-weight: bold;
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.icon-1 { top: 20%; left: 10%; animation: float 4s ease-in-out infinite reverse; }
+.icon-2 { bottom: 30%; right: 10%; animation: float 5s ease-in-out infinite 1s; }
+.icon-3 { top: 10%; right: 20%; animation: float 7s ease-in-out infinite; }
+
+/* O container do visual */
+
+/* Container principal da área visual */
+.hero-visual {
+    position: relative;
+    width: 50%;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    overflow: hidden; /* Importante para o scanner não vazar */
+}
+
+#holo-canvas {
+    position: absolute;
+    z-index: 1;
+}
+
+/* Linha de Scanner que sobe e desce */
+.scan-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, 
+        transparent 40%, 
+        rgba(0, 255, 255, 0.1) 50%, 
+        transparent 60%);
+    background-size: 100% 3px;
+    z-index: 2;
+    pointer-events: none; /* Deixa o mouse passar */
+    animation: scan-move 4s linear infinite;
+}
+
+/* Dados técnicos no canto */
+.system-data {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    z-index: 2;
+}
+
+@keyframes scan-move {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+/* Atualize o estilo do #holo-canvas */
+#holo-canvas {
+    position: absolute;
+    z-index: 1;
+    cursor: grab; /* Mãozinha aberta (pode pegar) */
+    transition: cursor 0.1s;
+}
+
+#holo-canvas:active {
+    cursor: grabbing; /* Mãozinha fechada (segurando) */
+}
+
+/* O restante do CSS permanece igual ao anterior... */
+.hero-visual {
+    /* ... mantenha o que já tinha ... */
+    user-select: none; /* Importante: impede que selecione o texto enquanto arrasta */
+}
+
+/* Badges flutuantes atualizados */
+.badge-float {
+  position: absolute;
+  padding: 8px 18px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+/* Badge Superior (Full Stack) - Roxo */
+.badge-top {
+  top: 20px; right: -20px;
+  background: var(--bg-deep-blue);
+  color: var(--accent-purple);
+  border: 1px solid var(--accent-purple);
+  box-shadow: 0 0 15px rgba(157, 70, 255, 0.4);
+}
+
+/* Badge Inferior (Freelancer) - Verde */
+.badge-bottom {
+  bottom: 20px; left: -20px;
+  background: var(--accent-action);
+  color: var(--bg-deep-blue);
+  box-shadow: 0 0 15px rgba(0, 250, 154, 0.4);
+  /* Efeito de brilho pulsante leve */
+  animation: pulse-badge 3s infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Ajuste na imagem para ficar mais "Cyberpunk Dev" */
+.profile-img {
+  /* Mantemos o grayscale, mas aumentamos o contraste para ficar mais dramático */
+  filter: grayscale(100%) contrast(1.2); 
+}
+
+/* Container da Seção */
+.about-section {
+  padding: 100px 4rem; /* Espaço generoso */
+  background-color: var(--bg-deep-blue);
+  position: relative;
+}
+
+/* Container da Seção (Ajuste de segurança) */
+.about-container {
+  max-width: 1200px;
+  /* Mudamos de '0 auto' para dar uma margem forçada na esquerda */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem; /* Adiciona um respiro extra geral */
+  display: flex;
+  align-items: center;
+  gap: 4rem; 
+}
+
+/* --- LADO ESQUERDO: MOLDURA DA FOTO --- */
+.about-visual {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* Centraliza a foto dentro do espaço dela */
+  
+  /* AQUI ESTÁ O SEGREDO: Aumente de 5rem para 10rem ou 12rem */
+  margin-left: 10rem; 
+  
+  max-width: 350px; 
+}
+
+
+.profile-frame {
+position: relative;
+  /* REDUZA A LARGURA E ALTURA AQUI 👇 */
+  width: 280px;  /* Valor menor, ex: 280px ou 300px */
+  height: 380px; /* Valor menor, ex: 380px ou 400px */
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  background: rgba(15, 15, 36, 0.5);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  /* Garante que a imagem interna se ajuste a este novo tamanho */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.2);
+  transition: 0.5s;
+}
+
+/* Efeito Hover: Foto fica colorida e borda brilha */
+.profile-frame:hover .profile-img {
+  filter: grayscale(0%);
+}
+.profile-frame:hover {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 20px var(--accent-purple);
+}
+
+/* Cantos decorativos (Estilo HUD) */
+.frame-corner {
+  position: absolute;
+  width: 40px; height: 40px;
+  border: 3px solid var(--accent-detail); /* Ciano */
+  transition: 0.3s;
+}
+
+.top-left {
+  top: -2px; left: -2px;
+  border-right: none; border-bottom: none;
+}
+
+.bottom-right {
+  bottom: -2px; right: -2px;
+  border-left: none; border-top: none;
+}
+
+/* Badges flutuantes */
+.badge-tech, .badge-dev {
+  position: absolute;
+  padding: 5px 15px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.badge-tech {
+  top: 20px; right: -15px;
+  background: var(--accent-action); /* Verde */
+  color: var(--bg-deep-blue);
+  box-shadow: 0 0 10px var(--accent-action);
+}
+
+.badge-dev {
+  bottom: 20px; left: -15px;
+  background: var(--accent-purple); /* Roxo */
+  color: white;
+  box-shadow: 0 0 10px var(--accent-purple);
+}
+
+/* --- LADO DIREITO: CONTEÚDO --- */
+.about-content {
+  flex: 1.2; /* Ocupa um pouco mais de espaço que a foto */
+}
+
+.section-title {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.role-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+  font-family: monospace; /* Fonte tech */
+}
+
+.bio-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2.5rem;
+}
+
+/* Barras de Skill */
+.skills-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  position: relative;
+}
+
+/* Cores das barras com brilho */
+.green-fill { 
+  background: var(--accent-action); 
+  box-shadow: 0 0 10px var(--accent-action);
+}
+.purple-fill { 
+  background: var(--accent-purple); 
+  box-shadow: 0 0 10px var(--accent-purple);
+}
+.cyan-fill { 
+  background: var(--accent-detail); 
+  box-shadow: 0 0 10px var(--accent-detail);
+}
+
+.mt-4 { margin-top: 1.5rem; display: inline-block; }
+
+/* Responsividade para celular */
+@media (max-width: 900px) {
+  .about-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .about-visual {
+    margin-bottom: 3rem;
+  }
+  
+  .skill-header {
+    text-align: left; /* Mantém texto das skills alinhado */
+  }
+}
+
+/* --- ESTILOS DO GRID DE TECNOLOGIA --- */
+
+/* Container */
+/* --- ESTILO DAS BARRAS DE TECNOLOGIA (TECH STRIPS) --- */
+
+.tech-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Espaço entre as barras */
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* A Barra Base */
+.tech-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Separa título (esq) das tags (dir) */
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden; /* Para o efeito de brilho */
+}
+
+/* Lado Esquerdo: Ícone + Título */
+.row-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 140px; /* Garante alinhamento */
+}
+
+.row-header h4 {
+  color: #fff;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.row-icon {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Lado Direito: As Tags */
+.row-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end; /* Alinha tags à direita */
+}
+
+.tech-pill {
+  font-size: 0.8rem;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px; /* Mais arredondado = mais moderno */
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid transparent;
+  transition: 0.2s;
+}
+
+/* --- EFEITOS DE COR E HOVER --- */
+
+/* Hover na Barra Inteira */
+.tech-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(5px); /* Move levemente para a direita */
+}
+
+/* Hover na Tech Pill (Tag) */
+.tech-row:hover .tech-pill {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Cores Específicas (Borda Esquerda Neon) */
+
+/* Roxo */
+.row-purple { border-left: 3px solid #9D46FF; }
+.row-purple .row-icon { color: #9D46FF; }
+.row-purple:hover { box-shadow: 0 0 20px rgba(157, 70, 255, 0.1); }
+
+/* Ciano */
+.row-cyan { border-left: 3px solid #00FFFF; }
+.row-cyan .row-icon { color: #00FFFF; }
+.row-cyan:hover { box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+
+/* Verde */
+.row-green { border-left: 3px solid #00FA9A; }
+.row-green .row-icon { color: #00FA9A; }
+.row-green:hover { box-shadow: 0 0 20px rgba(0, 250, 154, 0.1); }
+
+/* Responsividade (Celular) */
+@media (max-width: 600px) {
+  .tech-row {
+    flex-direction: column; /* Um embaixo do outro no celular */
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .row-content {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
