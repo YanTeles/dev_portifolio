@@ -1,36 +1,26 @@
 :root {
-  /* Fundo Principal */
-  --bg-deep-blue: #0F0F24; /* ou #120A2A */
-  
-  /* Tipografia */
+  --bg-deep-blue: #0F0F24;
   --text-primary: #FFFFFF;
-  
-  /* Cores de Destaque */
-  --accent-purple: #9D46FF; /* Roxo Elétrico */
-  --accent-action: #00FA9A; /* Verde Menta Neon */
-  --accent-detail: #00FFFF; /* Ciano */
-  
-  /* Configuração Base */
+  --accent-purple: #9D46FF;
+  --accent-action: #00FA9A;
+  --accent-detail: #00FFFF;
   color-scheme: dark;
 }
 
 body {
   background-color: var(--bg-deep-blue);
   color: var(--text-primary);
-  /* Adicione sua fonte preferida aqui, ex: 'Inter', sans-serif */
 }
 
-/* Variáveis para relembrar (já configuradas anteriormente) */
 :root {
   --bg-deep-blue: #0F0F24;
   --text-primary: #FFFFFF;
   --accent-purple: #9D46FF;
   --accent-action: #00FA9A;
   --accent-detail: #00FFFF;
-  --glass-bg: rgba(255, 255, 255, 0.05); /* Leve transparência para separar a sidebar */
+  --glass-bg: rgba(255, 255, 255, 0.05);
 }
 
-/* Reset Básico */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 
 /* Container da Sidebar */
@@ -41,18 +31,13 @@ body {
   height: 100vh;
   width: 260px;
   background-color: var(--bg-deep-blue);
-  
-  /* A Mágica da Profundidade 👇 */
-  /* Sombra preta forte e espalhada para a direita */
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.7); 
-  /* Borda direita quase invisível para definir o corte */
-  border-right: 1px solid rgba(255, 255, 255, 0.03); 
-  
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.7);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 2rem;
-  z-index: 1000; /* Garante que ela fique na frente de qualquer conteúdo da página */
+  z-index: 1000;
 }
 
 /* 1. Header & Logo */
@@ -694,5 +679,323 @@ position: relative;
   .row-content {
     justify-content: flex-start;
     width: 100%;
+  }
+}
+
+/* --- SEÇÃO PROJETOS --- */
+.projects-section {
+  padding: 100px 4rem;
+  background-color: var(--bg-deep-blue);
+  /* Um degradê sutil no fundo para diferenciar da seção anterior */
+  background-image: linear-gradient(to bottom, var(--bg-deep-blue), #0a0a1a);
+}
+
+.projects-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+/* Grid Layout */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* O Card do Projeto */
+.project-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden; /* Para a imagem não vazar as bordas */
+  transition: all 0.4s ease;
+  position: relative;
+  group: hover; /* Habilita interações de grupo */
+}
+
+/* Efeito Hover no Card Inteiro */
+.project-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--accent-purple);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* --- ÁREA DA IMAGEM --- */
+.project-image {
+  height: 200px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Placeholders (Enquanto não tem print) */
+.placeholder-img { width: 100%; height: 100%; }
+.purple-gradient { background: linear-gradient(45deg, #2b1055, #9d46ff); }
+.cyan-gradient { background: linear-gradient(45deg, #0f2e2e, #00ffff); }
+.green-gradient { background: linear-gradient(45deg, #052b18, #00fa9a); }
+
+/* Se usar tag <img> depois, use esta classe */
+.project-image img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.1); /* Zoom na imagem ao passar o mouse */
+}
+
+/* Overlay (Botões que aparecem em cima da imagem) */
+.project-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 15, 36, 0.8); /* Fundo escuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0; /* Invisível por padrão */
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .project-overlay {
+  opacity: 1; /* Aparece no hover */
+}
+
+/* Botões Redondos do Overlay */
+.btn-icon {
+  width: 45px; height: 45px;
+  background: var(--accent-purple);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  box-shadow: 0 0 10px var(--accent-purple);
+}
+
+.btn-icon:hover {
+  background: white;
+  color: var(--accent-purple);
+  transform: scale(1.1);
+}
+
+/* --- ÁREA DE CONTEÚDO --- */
+.project-content {
+  padding: 1.5rem;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.project-header h3 {
+  font-size: 1.2rem;
+  color: white;
+  margin: 0;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+}
+
+.project-content p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+/* Tags de Tecnologia no rodapé do card */
+.project-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.project-techs span {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border: 1px solid var(--accent-action); /* Borda Verde */
+  border-radius: 12px;
+  color: var(--accent-action);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr; /* 1 coluna no celular */
+  }
+}
+
+/* --- SEÇÃO CONTATO --- */
+.contact-section {
+  padding: 100px 4rem 20px 4rem; /* Padding bottom menor por causa do footer */
+  background-color: var(--bg-deep-blue);
+  position: relative;
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: 4rem;
+}
+
+.contact-wrapper {
+  display: flex;
+  gap: 4rem;
+  margin-top: 3rem;
+}
+
+/* --- LADO ESQUERDO: CARDS DE INFO --- */
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(10px);
+  border-color: var(--accent-purple);
+}
+
+.icon-box {
+  font-size: 1.8rem;
+  width: 50px; height: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.info-content h3 { color: white; font-size: 1.1rem; margin-bottom: 4px; }
+.info-content p { color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin: 0; }
+
+.arrow-link {
+  margin-left: auto; /* Empurra a seta para o final */
+  color: var(--accent-action);
+  font-weight: bold;
+}
+
+/* Destaque para o WhatsApp (Verde) */
+.highlight-card {
+  border-left: 4px solid var(--accent-action);
+}
+
+/* --- LADO DIREITO: FORMULÁRIO --- */
+.contact-form {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  position: relative;
+}
+
+/* Estilo dos Inputs */
+.input-group input, 
+.input-group textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding: 15px 0;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+}
+
+/* Efeito de Foco (Linha muda de cor) */
+.input-group input:focus, 
+.input-group textarea:focus {
+  border-bottom-color: var(--accent-purple);
+}
+
+/* Label Flutuante (Animação) */
+.input-group label {
+  position: absolute;
+  top: 15px; left: 0;
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+/* Quando clica ou tem texto, o label sobe */
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label,
+.input-group textarea:focus ~ label,
+.input-group textarea:not(:placeholder-shown) ~ label {
+  top: -10px;
+  font-size: 0.8rem;
+  color: var(--accent-purple);
+}
+
+/* Botão de Enviar */
+.btn-submit {
+  background: linear-gradient(90deg, var(--accent-purple), #7b2cbf);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-top: 1rem;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(157, 70, 255, 0.4);
+}
+
+/* --- RODAPÉ (FOOTER) --- */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.footer p {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+
+/* Responsividade */
+@media (max-width: 850px) {
+  .contact-wrapper {
+    flex-direction: column;
   }
 }
