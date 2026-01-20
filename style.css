@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --bg-deep-blue: #0F0F24;
   --text-primary: #FFFFFF;
@@ -112,12 +116,62 @@ body {
   letter-spacing: 1px;
   transition: all 0.3s ease;
   box-shadow: 0 0 5px rgba(0, 250, 154, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-action:hover {
   background-color: var(--accent-action);
-  color: var(--bg-deep-blue); /* Contraste preto/azul no texto */
-  box-shadow: 0 0 20px rgba(0, 250, 154, 0.4); /* Brilho intenso */
+  color: var(--bg-deep-blue);
+  box-shadow: 0 0 20px rgba(0, 250, 154, 0.4);
+}
+
+.btn-action.active {
+  animation: btn-ripple 0.6s ease-out;
+}
+
+@keyframes btn-ripple {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 250, 154, 0.1), 0 0 0 0 rgba(0, 250, 154, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 250, 154, 0.1), 0 0 0 20px rgba(0, 250, 154, 0);
+  }
+}
+
+/* Botão Premium com animação extra */
+.btn-action-premium {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-action-premium::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+  animation: pulse-btn 3s ease-in-out infinite;
+}
+
+.btn-icon-dot {
+  font-size: 1.3rem;
+  display: block;
+  animation: float-btn 2s ease-in-out infinite;
+}
+
+.btn-text {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+@keyframes float-btn {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes pulse-btn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 
 /* Layout Principal (Compensa a Sidebar) */
@@ -380,21 +434,23 @@ body {
 
 /* Container da Seção */
 .about-section {
-  padding: 100px 4rem; /* Espaço generoso */
+  padding: 150px 4rem; 
   background-color: var(--bg-deep-blue);
   position: relative;
 }
 
 /* Container da Seção (Ajuste de segurança) */
 .about-container {
-  max-width: 1200px;
-  /* Mudamos de '0 auto' para dar uma margem forçada na esquerda */
+max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 2rem; /* Adiciona um respiro extra geral */
+  
   display: flex;
-  align-items: center;
-  gap: 4rem; 
+  
+  /* ADICIONE OU GARANTA QUE ESTA LINHA ESTEJA AQUI 👇 */
+  align-items: center; /* Centraliza verticalmente imagem e texto */
+  
+  gap: 5rem; /* Mantém o espaçamento lateral que definimos antes */
 }
 
 /* --- LADO ESQUERDO: MOLDURA DA FOTO --- */
@@ -404,7 +460,7 @@ body {
   justify-content: center; /* Centraliza a foto dentro do espaço dela */
   
   /* AQUI ESTÁ O SEGREDO: Aumente de 5rem para 10rem ou 12rem */
-  margin-left: 10rem; 
+  margin-left: 0; 
   
   max-width: 350px; 
 }
@@ -690,18 +746,115 @@ position: relative;
   background-image: linear-gradient(to bottom, var(--bg-deep-blue), #0a0a1a);
 }
 
-.projects-container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Área Interditada / Em Desenvolvimento */
+.projects-restricted {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  background: linear-gradient(135deg, rgba(157, 70, 255, 0.05), rgba(0, 255, 255, 0.05));
+  border: 2px dashed rgba(157, 70, 255, 0.3);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 3rem;
 }
 
-.section-subtitle {
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 3rem;
+.projects-restricted::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 35px,
+    rgba(157, 70, 255, 0.03) 35px,
+    rgba(157, 70, 255, 0.03) 70px
+  );
+  pointer-events: none;
+}
+
+.restricted-content {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 3rem;
+}
+
+.restricted-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: pulse-icon 2s ease-in-out infinite;
+}
+
+.restricted-content h3 {
+  font-size: 2rem;
+  color: var(--accent-purple);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(157, 70, 255, 0.3);
+}
+
+.restricted-content p {
   font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.6;
 }
 
-/* Grid Layout */
+.restricted-content p.coming-soon {
+  font-size: 1rem;
+  color: var(--accent-action);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@keyframes pulse-icon {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* CTA dentro da área interditada */
+.restricted-cta {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(157, 70, 255, 0.2);
+}
+
+.restricted-cta .cta-message {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.restricted-cta .cta-link {
+  display: inline-block;
+  font-size: 1.3rem;
+  color: var(--accent-action);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, rgba(0, 250, 154, 0.1), rgba(0, 250, 154, 0.05));
+  border: 2px solid var(--accent-action);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 250, 154, 0.2);
+}
+
+.restricted-cta .cta-link:hover {
+  background: var(--accent-action);
+  color: var(--bg-deep-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(0, 250, 154, 0.5);
+}
+
+/* Grid Layout (Mantém a classe se precisar no futuro) */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

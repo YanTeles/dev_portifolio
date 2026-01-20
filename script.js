@@ -118,7 +118,7 @@ function animate() {
         ctx.beginPath();
         ctx.arc(proj.x, proj.y, 2 * proj.scale, 0, Math.PI * 2);
         ctx.fillStyle = p.baseColor;
-        ctx.globalAlpha = alpha;
+        ctx.globalAlpha = 0.8;
         ctx.fill();
         ctx.globalAlpha = 1;
     });
@@ -147,3 +147,53 @@ function animate() {
 }
 
 animate();
+
+// Destacar o link da sidebar baseado na seção visível
+function highlightCurrentSection() {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    window.addEventListener('scroll', () => {
+        let currentSection = '';
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            // Se a seção está na viewport
+            if (window.pageYOffset >= sectionTop - 300) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+
+        // Remove a classe "active" de todos os links
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+        });
+
+        // Adiciona a classe "active" ao link que corresponde à seção atual
+        if (currentSection) {
+            const activeLink = document.querySelector(`.sidebar-nav a[href="#${currentSection}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+    });
+}
+
+highlightCurrentSection();
+
+// Efeito de Ripple no botão de orçamento
+const btnAction = document.querySelector('.btn-action');
+if (btnAction) {
+    btnAction.addEventListener('click', function(e) {
+        // Remove a classe se já existir
+        this.classList.remove('active');
+        
+        // Força um reflow para reiniciar a animação
+        void this.offsetWidth;
+        
+        // Adiciona a classe para ativar a animação
+        this.classList.add('active');
+    });
+}
