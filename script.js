@@ -197,3 +197,18 @@ if (btnAction) {
         this.classList.add('active');
     });
 }
+
+// Efeito de Ripple nos botões primários
+const btnRippleEffects = document.querySelectorAll('.btn-ripple-effect');
+btnRippleEffects.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        // Remove a classe se já existir
+        this.classList.remove('ripple');
+        
+        // Força um reflow para reiniciar a animação
+        void this.offsetWidth;
+        
+        // Adiciona a classe para ativar a animação
+        this.classList.add('ripple');
+    });
+});
