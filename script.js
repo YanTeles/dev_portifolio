@@ -344,14 +344,24 @@ document.addEventListener('DOMContentLoaded', function() {
     hamburger.className = 'hamburger-menu';
     hamburger.innerHTML = '<span></span><span></span><span></span>';
     hamburger.setAttribute('aria-label', 'Menu');
+    hamburger.setAttribute('aria-expanded', 'false');
     
     // Inserir hamburger antes da navega��o
     sidebar.appendChild(hamburger);
     
     // Funcionalidade do hamburger
-    hamburger.addEventListener('click', function() {
-        sidebarNav.classList.toggle('active');
+    hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isActive = sidebarNav.classList.toggle('active');
         hamburger.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+        
+        // Previne scroll do body quando menu está aberto
+        if (isActive) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     });
     
     // Fechar menu ao clicar em um link
@@ -360,7 +370,22 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function() {
             sidebarNav.classList.remove('active');
             hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
         });
+    });
+    
+    // Fechar menu ao clicar fora
+    document.addEventListener('click', function(e) {
+        if (sidebarNav.classList.contains('active') && 
+            !sidebar.contains(e.target) && 
+            !sidebarNav.contains(e.target) &&
+            !hamburger.contains(e.target)) {
+            sidebarNav.classList.remove('active');
+            hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
     });
     
     // Fechar menu ao redimensionar a janela
@@ -368,6 +393,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.innerWidth > 768) {
             sidebarNav.classList.remove('active');
             hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
         }
-    });
+    }, { passive: true });
 });
