@@ -8,26 +8,44 @@ const config = {
     particleCount: 150,
     radius: 180,
     perspective: 800,
-    autoSpeed: 0.002,      // Velocidade da rotação automática (lenta)
+    autoSpeed: 0.002,
     connectionDist: 60,
-    dragSensitivity: 0.005, // Quão rápido ele gira quando você arrasta
+    dragSensitivity: 0.005,
     friction: 0.95
 };
 
 let particles = [];
 let isDragging = false;
 let startX, startY;
-let currentRotationX = 0; // Velocidade atual no eixo X (Cima/Baixo)
+let currentRotationX = 0;
 let currentRotationY = config.autoSpeed;
+let resizeTimeout;
 
 function resize() {
-    width = container.offsetWidth;
-    height = container.offsetHeight;
+    if (!container) return;
+    
+    width = container.offsetWidth || window.innerWidth;
+    height = container.offsetHeight || 300;
+    
+    // Garante mínimo
+    if (width < 100) width = 100;
+    if (height < 100) height = 100;
+    
     canvas.width = width;
     canvas.height = height;
+
+    // 1. Calcula o novo raio baseado no tamanho atual da tela (Responsivo)
+    config.radius = Math.min(width, height) * 0.35; 
+
+    // 2. IMPORTANTE: Limpa e recria as partículas com o novo raio
+    particles = [];
+    for(let i = 0; i < config.particleCount; i++) {
+        particles.push(new Point3D());
+    }
 }
-window.addEventListener('resize', resize);
-resize();
+
+// Força resize inicial com delay para garantir que DOM está pronto
+setTimeout(resize, 50);
 
 class Point3D {
     constructor() {
@@ -93,11 +111,27 @@ canvas.addEventListener('mousedown', (e) => startDrag(e.clientX, e.clientY));
 window.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
 window.addEventListener('mouseup', stopDrag);
 
-canvas.addEventListener('touchstart', (e) => startDrag(e.touches[0].clientX, e.touches[0].clientY), {passive: false});
-window.addEventListener('touchmove', (e) => moveDrag(e.touches[0].clientX, e.touches[0].clientY), {passive: false});
-window.addEventListener('touchend', stopDrag);
+canvas.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length > 0) {
+        startDrag(e.touches[0].clientX, e.touches[0].clientY);
+    }
+}, {passive: false});
+
+canvas.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches.length > 0) {
+        moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+    }
+}, {passive: false});
+
+canvas.addEventListener('touchend', stopDrag);
 
 function animate() {
+    // Verificar se canvas tem dimensões válidas
+    if (!canvas || canvas.width <= 0 || canvas.height <= 0) {
+        requestAnimationFrame(animate);
+        return;
+    }
+
     ctx.clearRect(0, 0, width, height);
     if (!isDragging) {
         currentRotationX *= config.friction;
@@ -210,5 +244,44 @@ btnRippleEffects.forEach(btn => {
         
         // Adiciona a classe para ativar a animação
         this.classList.add('ripple');
+    });
+});
+
+// ========== MENU MOBILE ==========
+// Criar bot�o hamburger dinamicamente em mobile
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarNav = document.querySelector('.sidebar-nav');
+    
+    // Criar bot�o hamburger
+    const hamburger = document.createElement('button');
+    hamburger.className = 'hamburger-menu';
+    hamburger.innerHTML = '<span></span><span></span><span></span>';
+    hamburger.setAttribute('aria-label', 'Menu');
+    
+    // Inserir hamburger antes da navega��o
+    sidebar.appendChild(hamburger);
+    
+    // Funcionalidade do hamburger
+    hamburger.addEventListener('click', function() {
+        sidebarNav.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+    
+    // Fechar menu ao clicar em um link
+    const navLinks = sidebarNav.querySelectorAll('a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            sidebarNav.classList.remove('active');
+            hamburger.classList.remove('active');
+        });
+    });
+    
+    // Fechar menu ao redimensionar a janela
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            sidebarNav.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
     });
 });

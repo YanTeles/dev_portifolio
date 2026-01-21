@@ -1241,3 +1241,539 @@ position: relative;
     flex-direction: column;
   }
 }
+
+/* ========== HAMBURGER MENU MOBILE ========== */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  gap: 5px;
+}
+
+.hamburger-menu span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Mostrar hamburger em tablets */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: flex;
+  }
+}
+
+/* Animação do hamburger quando ativo */
+.hamburger-menu.active span:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* ========== RESPONSIVIDADE MOBILE ========== */
+
+/* Tablets e Telas Pequenas (768px - 1024px) */
+@media (max-width: 768px) {
+  /* Sidebar se torna horizontal no topo */
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar-header {
+    flex: 1;
+  }
+
+  .sidebar-header .logo {
+    font-size: 1.4rem;
+  }
+
+  .sidebar-nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-deep-blue);
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .sidebar-nav.active {
+    display: flex;
+  }
+
+  .sidebar-nav ul {
+    gap: 0.8rem;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  /* Main content não precisa mais de margin-left */
+  .main-content {
+    margin-left: 0;
+  }
+
+  /* Hero Section */
+  .hero-container {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 3rem 1.5rem;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .headline {
+    font-size: 2rem;
+  }
+
+  .subheadline {
+    font-size: 0.95rem;
+  }
+
+  .hero-btns {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  .hero-visual {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  #holo-canvas {
+    position: absolute;
+    top: 0;       /* Garante que comece no topo */
+    left: 0;      /* Garante que comece na esquerda */
+    width: 100%;  /* Ocupa toda a largura do pai */
+    height: 100%; /* Ocupa toda a altura do pai */
+    z-index: 1;
+    cursor: grab;
+    transition: cursor 0.1s;
+  }
+
+  /* About Section */
+  .about-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .about-visual {
+    margin-bottom: 2rem;
+  }
+
+  .profile-frame {
+    width: 250px;
+    height: 250px;
+  }
+
+  .profile-img {
+    width: 240px;
+    height: 240px;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .role-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .bio-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .btn-download {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  /* Tech List */
+  .tech-list {
+    gap: 0.8rem;
+  }
+
+  .tech-row {
+    padding: 0.8rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .row-header {
+    width: 100%;
+  }
+
+  .row-content {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .tech-pill {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+  }
+
+  /* Projects Section */
+  .projects-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .projects-restricted {
+    min-height: 300px;
+  }
+
+  .restricted-content {
+    padding: 2rem 1rem;
+  }
+
+  .restricted-icon {
+    font-size: 3rem;
+  }
+
+  .restricted-content h3 {
+    font-size: 1.5rem;
+  }
+
+  /* Contact Section */
+  .contact-section {
+    padding: 3rem 1.5rem 20px 1.5rem;
+  }
+
+  .contact-container {
+    margin-bottom: 2rem;
+  }
+
+  .contact-wrapper {
+    gap: 2rem;
+  }
+
+  .contact-info {
+    gap: 1rem;
+  }
+
+  .contact-card {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .icon-box {
+    font-size: 2rem;
+    min-width: 50px;
+  }
+
+  .info-content h3 {
+    font-size: 1rem;
+  }
+
+  .info-content p {
+    font-size: 0.85rem;
+  }
+
+  /* Contact Form */
+  .contact-form {
+    gap: 1rem;
+  }
+
+  .input-group input,
+  .input-group textarea {
+    padding: 12px 12px;
+    font-size: 1rem;
+  }
+
+  .input-group label {
+    font-size: 0.9rem;
+  }
+
+  .btn-submit {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+
+  /* Footer */
+  .footer-content {
+    padding: 1.5rem;
+  }
+
+  .footer p {
+    font-size: 0.8rem;
+  }
+}
+
+/* Celulares (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Sidebar no celular */
+  .sidebar {
+    padding: 0.8rem;
+  }
+
+  .sidebar-header .logo {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .sidebar-nav {
+    top: 55px;
+    padding: 0.8rem;
+  }
+
+  .sidebar-nav ul {
+    gap: 0.5rem;
+  }
+
+  .sidebar-nav a {
+    font-size: 0.95rem;
+  }
+
+  /* Hero */
+  .hero-section {
+    padding: 2rem 0 0 0;
+  }
+
+  .hero-container {
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .greeting {
+    font-size: 0.9rem;
+  }
+
+  .headline {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .subheadline {
+    font-size: 0.85rem;
+  }
+
+  .hero-btns {
+    gap: 0.8rem;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .hero-visual {
+    height: 250px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  #holo-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    position: absolute;
+  }
+
+  /* About */
+  .about-section {
+    padding: 2rem 1rem;
+  }
+
+  .profile-frame {
+    width: 200px;
+    height: 200px;
+  }
+
+  .profile-img {
+    width: 190px;
+    height: 190px;
+  }
+
+  .badge-float {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .role-subtitle {
+    font-size: 1rem;
+  }
+
+  .bio-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .btn-download {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+  }
+
+  .tech-row {
+    padding: 0.6rem 0.8rem;
+    gap: 0.6rem;
+  }
+
+  .row-icon {
+    font-size: 1rem;
+  }
+
+  .row-header h4 {
+    font-size: 0.9rem;
+  }
+
+  .tech-pill {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+
+  /* Projects */
+  .projects-section {
+    padding: 2rem 1rem;
+  }
+
+  .projects-container {
+    max-width: 100%;
+  }
+
+  .projects-restricted {
+    min-height: 200px;
+  }
+
+  .restricted-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .restricted-icon {
+    font-size: 2.5rem;
+  }
+
+  .restricted-content h3 {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+
+  .restricted-content p {
+    font-size: 0.85rem;
+  }
+
+  .cta-message {
+    font-size: 0.9rem;
+  }
+
+  /* Contact */
+  .contact-section {
+    padding: 2rem 1rem 20px 1rem;
+  }
+
+  .contact-info {
+    gap: 0.8rem;
+  }
+
+  .contact-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem 0.8rem;
+    gap: 0.8rem;
+  }
+
+  .icon-box {
+    font-size: 1.8rem;
+  }
+
+  .info-content h3 {
+    font-size: 0.95rem;
+  }
+
+  .info-content p {
+    font-size: 0.8rem;
+  }
+
+  .arrow-link {
+    display: none;
+  }
+
+  .contact-form {
+    gap: 0.8rem;
+  }
+
+  .input-group input,
+  .input-group textarea {
+    padding: 10px 10px;
+    font-size: 0.95rem;
+  }
+
+  .input-group label {
+    font-size: 0.85rem;
+  }
+
+  .btn-submit {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+
+  .send-icon {
+    font-size: 1rem;
+  }
+
+  /* Footer */
+  .footer p {
+    font-size: 0.75rem;
+  }
+}
+
+/* Orientação Landscape em Celulares */
+@media (max-height: 500px) and (max-width: 768px) {
+  .hero-visual {
+    height: 200px;
+  }
+
+  .sidebar-nav {
+    top: 50px;
+  }
+
+  .headline {
+    font-size: 1.3rem;
+  }
+}
