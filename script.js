@@ -34,12 +34,24 @@ function resize() {
     canvas.width = width;
     canvas.height = height;
 
-    // 1. Calcula o novo raio baseado no tamanho atual da tela (Responsivo)
-    config.radius = Math.min(width, height) * 0.35; 
+    // --- DETECÇÃO DE DISPOSITIVO ---
+    const isMobile = width < 768; // Considera mobile se for menor que tablet
 
-    // 2. IMPORTANTE: Limpa e recria as partículas com o novo raio
+    // --- CALIBRAÇÃO DE TAMANHO (RAIO) ---
+    // Desktop: 0.48 (ocupa quase toda a altura disponível, fica imponente)
+    // Mobile: 0.30 (fica menorzinho para dar respiro nas bordas)
+    const radiusFactor = isMobile ? 0.30 : 0.48;
+    
+    config.radius = Math.min(width, height) * radiusFactor; 
+
+    // --- CALIBRAÇÃO DE DENSIDADE (QUANTIDADE DE PONTOS) ---
+    // Desktop: 150 pontos (visual rico)
+    // Mobile: 70 pontos (visual mais limpo e leve para processador de celular)
+    const targetParticleCount = isMobile ? 70 : 150;
+
+    // Recria as partículas com a nova quantidade e raio
     particles = [];
-    for(let i = 0; i < config.particleCount; i++) {
+    for(let i = 0; i < targetParticleCount; i++) {
         particles.push(new Point3D());
     }
 }
