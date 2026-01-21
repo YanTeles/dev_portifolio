@@ -11,7 +11,8 @@ const config = {
     autoSpeed: 0.002,
     connectionDist: 60,
     dragSensitivity: 0.005,
-    friction: 0.95
+    friction: 0.95,
+    frameSkip: 0 // Para reduzir frame rate em mobile se necessário
 };
 
 let particles = [];
@@ -20,6 +21,9 @@ let startX, startY;
 let currentRotationX = 0;
 let currentRotationY = config.autoSpeed;
 let resizeTimeout;
+let frameCount = 0;
+let animationId = null;
+let isVisible = true;
 
 function resize() {
     if (!container) return;
@@ -31,11 +35,21 @@ function resize() {
     if (width < 100) width = 100;
     if (height < 100) height = 100;
     
-    canvas.width = width;
-    canvas.height = height;
+    // Usa devicePixelRatio apenas se necessário (evita sobrecarga em mobile)
+    const dpr = window.devicePixelRatio > 2 ? 2 : window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    
+    // Escala o contexto para alta resolução
+    if (dpr !== 1) {
+        ctx.scale(dpr, dpr);
+    }
 
     // --- DETECÇÃO DE DISPOSITIVO ---
     const isMobile = width < 768; // Considera mobile se for menor que tablet
+    const isSmallMobile = width < 480; // Mobile muito pequeno
 
     // --- CALIBRAÇÃO DE TAMANHO (RAIO) ---
     // Desktop: 0.48 (ocupa quase toda a altura disponível, fica imponente)
@@ -47,7 +61,14 @@ function resize() {
     // --- CALIBRAÇÃO DE DENSIDADE (QUANTIDADE DE PONTOS) ---
     // Desktop: 150 pontos (visual rico)
     // Mobile: 70 pontos (visual mais limpo e leve para processador de celular)
-    const targetParticleCount = isMobile ? 70 : 150;
+    // Mobile pequeno: 50 pontos (ainda mais leve)
+    const targetParticleCount = isSmallMobile ? 50 : (isMobile ? 70 : 150);
+    
+    // Reduz conexões em mobile para melhor performance
+    config.connectionDist = isMobile ? 45 : 60;
+    
+    // Reduz frame skip em mobile (renderiza menos frames)
+    config.frameSkip = isMobile ? 1 : 0;
 
     // Recria as partículas com a nova quantidade e raio
     particles = [];
@@ -58,6 +79,14 @@ function resize() {
 
 // Força resize inicial com delay para garantir que DOM está pronto
 setTimeout(resize, 50);
+
+// Otimização: Debounce do resize para melhor performance
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        resize();
+    }, 150);
+}, { passive: true });
 
 class Point3D {
     constructor() {
@@ -112,6 +141,12 @@ function moveDrag(x, y) {
 
     startX = x;
     startY = y;
+    
+    // Pausar rotação automática durante o drag
+    if (Math.abs(deltaX) > 1 || Math.abs(deltaY) > 1) {
+        currentRotationY = deltaX * config.dragSensitivity;
+        currentRotationX = deltaY * config.dragSensitivity;
+    }
 }
 
 function stopDrag() {
@@ -124,23 +159,41 @@ window.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
 window.addEventListener('mouseup', stopDrag);
 
 canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
     if (e.touches && e.touches.length > 0) {
-        startDrag(e.touches[0].clientX, e.touches[0].clientY);
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        startDrag(touch.clientX - rect.left, touch.clientY - rect.top);
     }
 }, {passive: false});
 
 canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
     if (e.touches && e.touches.length > 0) {
-        moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        moveDrag(touch.clientX - rect.left, touch.clientY - rect.top);
     }
 }, {passive: false});
 
-canvas.addEventListener('touchend', stopDrag);
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    stopDrag();
+}, {passive: false});
+
+canvas.addEventListener('touchcancel', stopDrag);
 
 function animate() {
     // Verificar se canvas tem dimensões válidas
-    if (!canvas || canvas.width <= 0 || canvas.height <= 0) {
-        requestAnimationFrame(animate);
+    if (!canvas || canvas.width <= 0 || canvas.height <= 0 || !isVisible) {
+        animationId = requestAnimationFrame(animate);
+        return;
+    }
+
+    // Frame skipping para mobile (reduz carga de CPU)
+    frameCount++;
+    if (config.frameSkip > 0 && frameCount % (config.frameSkip + 1) !== 0) {
+        animationId = requestAnimationFrame(animate);
         return;
     }
 
@@ -169,8 +222,11 @@ function animate() {
         ctx.globalAlpha = 1;
     });
 
-    for (let i = 0; i < projectedPoints.length; i++) {
-        for (let j = i + 1; j < projectedPoints.length; j++) {
+    // Otimização: limitar número de conexões verificadas
+    const maxConnections = config.particleCount < 100 ? projectedPoints.length : Math.min(projectedPoints.length, 100);
+    
+    for (let i = 0; i < maxConnections; i++) {
+        for (let j = i + 1; j < Math.min(i + 20, projectedPoints.length); j++) {
             const p1 = projectedPoints[i];
             const p2 = projectedPoints[j];
             
@@ -189,17 +245,26 @@ function animate() {
         }
     }
 
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
 }
+
+// Otimização: Pausar animação quando a aba não está visível
+document.addEventListener('visibilitychange', () => {
+    isVisible = !document.hidden;
+    if (isVisible && !animationId) {
+        animate();
+    }
+});
 
 animate();
 
-// Destacar o link da sidebar baseado na seção visível
+// Destacar o link da sidebar baseado na seção visível (otimizado com throttle)
 function highlightCurrentSection() {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.sidebar-nav a');
+    let ticking = false;
 
-    window.addEventListener('scroll', () => {
+    const updateActiveSection = () => {
         let currentSection = '';
 
         sections.forEach(section => {
@@ -224,7 +289,16 @@ function highlightCurrentSection() {
                 activeLink.classList.add('active');
             }
         }
-    });
+        
+        ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(updateActiveSection);
+            ticking = true;
+        }
+    }, { passive: true });
 }
 
 highlightCurrentSection();
